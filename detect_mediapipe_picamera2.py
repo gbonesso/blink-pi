@@ -112,7 +112,8 @@ def run(model: str, num_faces: int,
             )'''
 
         im_array = picam2.capture_array("main")
-        image = Image.fromarray(im_array)
+        #image = Image.fromarray(im_array)
+        image = im_array
 
         image = cv2.flip(image, 1)
 
