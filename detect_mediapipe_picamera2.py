@@ -150,7 +150,7 @@ def run(model: str, num_faces: int,
                     landmark in
                     face_landmarks
                 ])
-                mp_drawing.draw_landmarks(
+                '''mp_drawing.draw_landmarks(
                     image=current_frame,
                     landmark_list=face_landmarks_proto,
                     connections=mp_face_mesh.FACEMESH_TESSELATION,
@@ -170,15 +170,15 @@ def run(model: str, num_faces: int,
                     connections=mp_face_mesh.FACEMESH_IRISES,
                     landmark_drawing_spec=None,
                     connection_drawing_spec=mp.solutions.drawing_styles
-                    .get_default_face_mesh_iris_connections_style())
+                    .get_default_face_mesh_iris_connections_style())'''
 
         # Expand the right side frame to show the blendshapes.
-        current_frame = cv2.copyMakeBorder(current_frame, 0, 0, 0,
+        '''current_frame = cv2.copyMakeBorder(current_frame, 0, 0, 0,
                                            label_padding_width,
                                            cv2.BORDER_CONSTANT, None,
-                                           label_background_color)
+                                           label_background_color)'''
 
-        if DETECTION_RESULT:
+        '''if DETECTION_RESULT:
           # Define parameters for the bars and text
           legend_x = current_frame.shape[
                          1] - label_padding_width + 20  # Starting X-coordinate (20 as a margin)
@@ -223,7 +223,7 @@ def run(model: str, num_faces: int,
                                 -1)  # Filled bar
 
                   # Update the Y-coordinate for the next bar
-                  legend_y += (bar_height + gap_between_bars)
+                  legend_y += (bar_height + gap_between_bars)'''
 
         #cv2.imshow('face_landmarker', current_frame)
 
@@ -232,8 +232,8 @@ def run(model: str, num_faces: int,
             break
 
     detector.close()
-    cap.release()
-    cv2.destroyAllWindows()
+    #cap.release()
+    #cv2.destroyAllWindows()
 
 
 def main():
