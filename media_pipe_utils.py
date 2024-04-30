@@ -16,28 +16,21 @@ def get_ear_values(detection_result):
         #print(annotated_image.shape)
         pointA = [face_landmarks[33].x, face_landmarks[33].y]
         pointB = [face_landmarks[133].x, face_landmarks[133].y]
-        pointC = [face_landmarks[145].x,
-                  face_landmarks[145].y]
-        pointD = [face_landmarks[159].x,
-                  face_landmarks[159].y]
-        pointE = [face_landmarks[158].x,
-                  face_landmarks[158].y ]
+        pointC = [face_landmarks[145].x, face_landmarks[145].y]
+        pointD = [face_landmarks[159].x, face_landmarks[159].y]
+        pointE = [face_landmarks[158].x, face_landmarks[158].y]
         pointF = compute_midpoint(pointD, pointE)
         #print(pointA)
 
         ear_right_eye = math.dist(pointC, pointF) / math.dist(pointA, pointB)
+        print(pointC, pointF, math.dist(pointC, pointF))
 
         # Left Eye
-        pointA = [face_landmarks[362].x,
-                  face_landmarks[362].y]
-        pointB = [face_landmarks[263].x,
-                  face_landmarks[263].y]
-        pointC = [face_landmarks[374].x,
-                  face_landmarks[374].y]
-        pointD = [face_landmarks[385].x,
-                  face_landmarks[385].y]
-        pointE = [face_landmarks[386].x,
-                  face_landmarks[386].y]
+        pointA = [face_landmarks[362].x, face_landmarks[362].y]
+        pointB = [face_landmarks[263].x, face_landmarks[263].y]
+        pointC = [face_landmarks[374].x, face_landmarks[374].y]
+        pointD = [face_landmarks[385].x, face_landmarks[385].y]
+        pointE = [face_landmarks[386].x, face_landmarks[386].y]
         pointF = compute_midpoint(pointD, pointE)
         # print(pointA)
 
