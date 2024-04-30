@@ -132,7 +132,7 @@ def run(model: str, num_faces: int,
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
 
         # Run face landmarker using the model.
-        detection_result = detector.detect_async(mp_image, time.time_ns() // 1_000_000)
+        detector.detect_async(mp_image, time.time_ns() // 1_000_000)
 
         # Show the FPS
         fps_text = 'FPS = {:.1f}'.format(FPS)
@@ -143,10 +143,11 @@ def run(model: str, num_faces: int,
                     cv2.FONT_HERSHEY_DUPLEX,
                     font_size, text_color, font_thickness, cv2.LINE_AA)'''
 
+        # DETECTION_RESULT é setado no callback...
         print(DETECTION_RESULT)
 
-        if detection_result is not None:
-            print(get_ear_values(detection_result))
+        if DETECTION_RESULT is not None:
+            print(get_ear_values(DETECTION_RESULT))
 
 
         #cv2.imshow('face_landmarker', current_frame)
