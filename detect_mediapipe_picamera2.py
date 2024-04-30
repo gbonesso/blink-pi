@@ -140,7 +140,9 @@ def run(model: str, num_faces: int,
                     cv2.FONT_HERSHEY_DUPLEX,
                     font_size, text_color, font_thickness, cv2.LINE_AA)'''
 
-        if DETECTION_RESULT:
+        print(detection_result)
+
+        if detection_result is not None:
             print(get_ear_values(detection_result))
 
 
