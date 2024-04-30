@@ -119,6 +119,9 @@ def run(model: str, num_faces: int,
         image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
         #print(image)
 
+        cv2.imshow('face_landmarker', image)
+        key = cv2.waitKey(0)
+
         im = Image.fromarray(im_array)
         print('PIL Image:', im)
 
