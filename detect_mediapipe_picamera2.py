@@ -117,7 +117,7 @@ def run(model: str, num_faces: int,
         #image = Image.fromarray(im_array)
 
         image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
-        print(image)
+        #print(image)
 
         #cv2.imshow('face_landmarker', image)
         #key = cv2.waitKey(0)
@@ -147,7 +147,7 @@ def run(model: str, num_faces: int,
         #print(DETECTION_RESULT)
 
         if DETECTION_RESULT is not None:
-            print(get_ear_values(DETECTION_RESULT))
+            print('EAR:', get_ear_values(DETECTION_RESULT))
 
 
         #cv2.imshow('face_landmarker', current_frame)
