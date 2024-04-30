@@ -2,7 +2,7 @@ import math
 
 
 def compute_midpoint(p1,p2):
-    return [int((p1[0] + p2[0]) / 2), int((p1[1] + p2[1]) / 2)]
+    return [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2]
 
 
 def get_ear_values(detection_result):
@@ -23,7 +23,7 @@ def get_ear_values(detection_result):
         #print(pointA)
 
         ear_right_eye = math.dist(pointC, pointF) / math.dist(pointA, pointB)
-        print(pointC, pointF, math.dist(pointC, pointF))
+        print(pointC, pointD, pointE, pointF, math.dist(pointC, pointF))
 
         # Left Eye
         pointA = [face_landmarks[362].x, face_landmarks[362].y]
