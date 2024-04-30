@@ -144,7 +144,7 @@ def run(model: str, num_faces: int,
                     font_size, text_color, font_thickness, cv2.LINE_AA)'''
 
         # DETECTION_RESULT é setado no callback...
-        print(DETECTION_RESULT)
+        #print(DETECTION_RESULT)
 
         if DETECTION_RESULT is not None:
             print(get_ear_values(DETECTION_RESULT))
