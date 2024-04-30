@@ -23,7 +23,7 @@ def get_ear_values(detection_result):
         #print(pointA)
 
         ear_right_eye = math.dist(pointC, pointF) / math.dist(pointA, pointB)
-        print(pointC, pointD, pointE, pointF, math.dist(pointC, pointF))
+        #print(pointC, pointD, pointE, pointF, math.dist(pointC, pointF))
 
         # Left Eye
         pointA = [face_landmarks[362].x, face_landmarks[362].y]
