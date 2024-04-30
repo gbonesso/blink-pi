@@ -114,6 +114,7 @@ def run(model: str, num_faces: int,
         im_array = picam2.capture_array("main")
         #image = Image.fromarray(im_array)
         image = im_array
+        print(image)
 
         image = cv2.flip(image, 1)
 
@@ -218,7 +219,7 @@ def run(model: str, num_faces: int,
                   # Update the Y-coordinate for the next bar
                   legend_y += (bar_height + gap_between_bars)
 
-        cv2.imshow('face_landmarker', current_frame)
+        #cv2.imshow('face_landmarker', current_frame)
 
         # Stop the program if the ESC key is pressed.
         if cv2.waitKey(1) == 27:
