@@ -27,6 +27,8 @@ from mediapipe.framework.formats import landmark_pb2
 from PIL import Image
 from picamera2 import Picamera2
 
+from media_pipe_utils import get_ear_values
+
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -127,103 +129,20 @@ def run(model: str, num_faces: int,
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
 
         # Run face landmarker using the model.
-        detector.detect_async(mp_image, time.time_ns() // 1_000_000)
+        detection_result = detector.detect_async(mp_image, time.time_ns() // 1_000_000)
 
         # Show the FPS
         fps_text = 'FPS = {:.1f}'.format(FPS)
         print(fps_text)
-        text_location = (left_margin, row_size)
+        '''text_location = (left_margin, row_size)
         current_frame = image
         cv2.putText(current_frame, fps_text, text_location,
                     cv2.FONT_HERSHEY_DUPLEX,
-                    font_size, text_color, font_thickness, cv2.LINE_AA)
+                    font_size, text_color, font_thickness, cv2.LINE_AA)'''
 
         if DETECTION_RESULT:
-            # Draw landmarks.
-            for face_landmarks in DETECTION_RESULT.face_landmarks:
-                #print(face_landmarks)
-                face_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
-                face_landmarks_proto.landmark.extend([
-                    landmark_pb2.NormalizedLandmark(x=landmark.x,
-                                                    y=landmark.y,
-                                                    z=landmark.z) for
-                    landmark in
-                    face_landmarks
-                ])
-                '''mp_drawing.draw_landmarks(
-                    image=current_frame,
-                    landmark_list=face_landmarks_proto,
-                    connections=mp_face_mesh.FACEMESH_TESSELATION,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp.solutions.drawing_styles
-                    .get_default_face_mesh_tesselation_style())
-                mp_drawing.draw_landmarks(
-                    image=current_frame,
-                    landmark_list=face_landmarks_proto,
-                    connections=mp_face_mesh.FACEMESH_CONTOURS,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp.solutions.drawing_styles
-                    .get_default_face_mesh_contours_style())
-                mp_drawing.draw_landmarks(
-                    image=current_frame,
-                    landmark_list=face_landmarks_proto,
-                    connections=mp_face_mesh.FACEMESH_IRISES,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp.solutions.drawing_styles
-                    .get_default_face_mesh_iris_connections_style())'''
+            print(get_ear_values(detection_result))
 
-        # Expand the right side frame to show the blendshapes.
-        '''current_frame = cv2.copyMakeBorder(current_frame, 0, 0, 0,
-                                           label_padding_width,
-                                           cv2.BORDER_CONSTANT, None,
-                                           label_background_color)'''
-
-        '''if DETECTION_RESULT:
-          # Define parameters for the bars and text
-          legend_x = current_frame.shape[
-                         1] - label_padding_width + 20  # Starting X-coordinate (20 as a margin)
-          legend_y = 30  # Starting Y-coordinate
-          bar_max_width = label_padding_width - 40  # Max width of the bar with some margin
-          bar_height = 8  # Height of the bar
-          gap_between_bars = 5  # Gap between two bars
-          text_gap = 5  # Gap between the end of the text and the start of the bar
-
-          face_blendshapes = DETECTION_RESULT.face_blendshapes
-
-          if face_blendshapes:
-              for idx, category in enumerate(face_blendshapes[0]):
-                  category_name = category.category_name
-                  score = round(category.score, 2)
-
-                  # Prepare text and get its width
-                  text = "{} ({:.2f})".format(category_name, score)
-                  (text_width, _), _ = cv2.getTextSize(text,
-                                                       cv2.FONT_HERSHEY_SIMPLEX,
-                                                       0.4, 1)
-
-                  # Display the blendshape name and score
-                  cv2.putText(current_frame, text,
-                              (legend_x, legend_y + (bar_height // 2) + 5),
-                              # Position adjusted for vertical centering
-                              cv2.FONT_HERSHEY_SIMPLEX,
-                              0.4,  # Font size
-                              (0, 0, 0),  # Black color
-                              1,
-                              cv2.LINE_AA)  # Thickness
-
-                  # Calculate bar width based on score
-                  bar_width = int(bar_max_width * score)
-
-                  # Draw the bar to the right of the text
-                  cv2.rectangle(current_frame,
-                                (legend_x + text_width + text_gap, legend_y),
-                                (legend_x + text_width + text_gap + bar_width,
-                                 legend_y + bar_height),
-                                (0, 255, 0),  # Green color
-                                -1)  # Filled bar
-
-                  # Update the Y-coordinate for the next bar
-                  legend_y += (bar_height + gap_between_bars)'''
 
         #cv2.imshow('face_landmarker', current_frame)
 
