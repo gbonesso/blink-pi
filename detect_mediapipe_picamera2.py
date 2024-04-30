@@ -116,6 +116,9 @@ def run(model: str, num_faces: int,
         image = im_array
         print(image)
 
+        im = Image.fromarray(im_array)
+        print('PIL Image:', im)
+
         image = cv2.flip(image, 1)
 
         # Convert the image from BGR to RGB as required by the TFLite model.
