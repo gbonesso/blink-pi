@@ -131,6 +131,7 @@ def run(model: str, num_faces: int,
 
         # Show the FPS
         fps_text = 'FPS = {:.1f}'.format(FPS)
+        print(fps_text)
         text_location = (left_margin, row_size)
         current_frame = image
         cv2.putText(current_frame, fps_text, text_location,
@@ -140,7 +141,7 @@ def run(model: str, num_faces: int,
         if DETECTION_RESULT:
             # Draw landmarks.
             for face_landmarks in DETECTION_RESULT.face_landmarks:
-                print(face_landmarks)
+                #print(face_landmarks)
                 face_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
                 face_landmarks_proto.landmark.extend([
                     landmark_pb2.NormalizedLandmark(x=landmark.x,
