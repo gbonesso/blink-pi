@@ -115,7 +115,7 @@ def run(model: str, num_faces: int,
         #image = Image.fromarray(im_array)
 
         image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
-        print(image)
+        #print(image)
 
         im = Image.fromarray(im_array)
         print('PIL Image:', im)
@@ -140,6 +140,7 @@ def run(model: str, num_faces: int,
         if DETECTION_RESULT:
             # Draw landmarks.
             for face_landmarks in DETECTION_RESULT.face_landmarks:
+                print(face_landmarks)
                 face_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
                 face_landmarks_proto.landmark.extend([
                     landmark_pb2.NormalizedLandmark(x=landmark.x,
