@@ -176,6 +176,11 @@ class MyApp(App):
                 #print('EAR:', get_ear_values(DETECTION_RESULT))
                 #print(self.login_screen.ear_left_label)
                 print(DETECTION_RESULT.face_blendshapes)
+                face_blendshapes_names = [face_blendshapes_category.category_name for face_blendshapes_category in
+                                          DETECTION_RESULT.face_blendshapes]
+                face_blendshapes_scores = [face_blendshapes_category.score for face_blendshapes_category in
+                                           DETECTION_RESULT.face_blendshapes]
+                eye_blink_left = face_blendshapes_scores[face_blendshapes_names.index('eyeBlinkLeft')]
 
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
@@ -191,7 +196,7 @@ class MyApp(App):
                         RIGHT_BLINK_COUNTER += 1
                     else:
                         RIGHT_OPEN_COUNTER += 1
-                    self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}\n{:.3f}'.format(ear_left, DETECTION_RESULT.face_blendshapes.eyeBlinkLeft)
+                    self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}\n{:.3f}'.format(ear_left, eye_blink_left)
                     self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
                     self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
                     self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
