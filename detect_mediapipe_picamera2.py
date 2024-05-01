@@ -53,19 +53,22 @@ class LoginScreen(GridLayout):
         #global ear_left_label
         self.cols = 2
         self.ear_left_label = Label(text='EAR L:')
-        self.add_widget(ear_left_label)
+        self.add_widget(self.ear_left_label)
         self.ear_right_label = Label(text='EAR R:')
         self.add_widget(self.ear_right_label)
+
+
 
 class MyApp(App):
 
     def build(self):
         self.login_screen = LoginScreen()
-
+        p1 = Process(target=self.main())
+        p1.start()
         #main()
         return self.login_screen
 
-    def run(self, model: str, num_faces: int,
+    def start(self, model: str, num_faces: int,
             min_face_detection_confidence: float,
             min_face_presence_confidence: float, min_tracking_confidence: float,
             camera_id: int, width: int, height: int) -> None:
@@ -241,7 +244,7 @@ class MyApp(App):
             default=960)
         args = parser.parse_args()
 
-        self.run(args.model, int(args.numFaces), args.minFaceDetectionConfidence,
+        self.start(args.model, int(args.numFaces), args.minFaceDetectionConfidence,
             args.minFacePresenceConfidence, args.minTrackingConfidence,
             int(args.cameraId), args.frameWidth, args.frameHeight)
 
@@ -250,5 +253,5 @@ if __name__ == '__main__':
     #main()
     #p1 = Process(target=main)
     #p1.start()
-    MyApp().main()
+    MyApp().run()
 
