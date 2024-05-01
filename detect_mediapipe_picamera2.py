@@ -14,11 +14,11 @@
 """Main scripts to run face landmarker."""
 
 import argparse
-import sys
 import time
-from multiprocessing import Process
-import threading
+from datetime import datetime
+
 import cv2
+import logging
 import mediapipe as mp
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -99,6 +99,18 @@ class MyApp(App):
             result_callback=self.save_result)
         self.detector = vision.FaceLandmarker.create_from_options(options)
 
+        # Logger
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
+        fh = logging.FileHandler(datetime.now().strftime('blinklogfile_%Y_%M_%d_%H_%m_%s.log'))
+        fh.setLevel(logging.DEBUG)  # ensure all messages are logged to file
+        # create a formatter and set the formatter for the handler.
+        frmt = logging.Formatter('%(asctime)s,%(message)s')
+        fh.setFormatter(frmt)
+        # add the Handler to the logger
+        self.logger.addHandler(fh)
+
+
     def on_start(self):
         #Window.custom_titlebar = True
         Window.maximize()
@@ -163,11 +175,13 @@ class MyApp(App):
             if len(DETECTION_RESULT.face_landmarks) > 0:
                 print('EAR:', get_ear_values(DETECTION_RESULT))
                 print(self.login_screen.ear_left_label)
+
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
                     global LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER
                     ear_left = get_ear_values(DETECTION_RESULT)[0]
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
+                    self.logger.info('{:.3f},{:.3f}'.format(ear_left, ear_right))
                     if ear_left < 0.35:
                         LEFT_BLINK_COUNTER += 1
                     else:
