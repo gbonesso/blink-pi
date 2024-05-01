@@ -190,12 +190,12 @@ class MyApp(App):
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
                     self.logger.info("{:.3f}${:.3f}${:.3f}${:.3f}".format(ear_left, ear_right, eye_blink_left, eye_blink_right, COUNTER))
                     #if ear_left < 0.35:
-                    if eye_blink_left > 0.5:
+                    if eye_blink_left > 0.4:
                         LEFT_BLINK_COUNTER += 1
                     else:
                         LEFT_OPEN_COUNTER += 1
                     #if ear_right < 0.35:
-                    if eye_blink_right > 0.5:
+                    if eye_blink_right > 0.4:
                         RIGHT_BLINK_COUNTER += 1
                     else:
                         RIGHT_OPEN_COUNTER += 1
