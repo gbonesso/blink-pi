@@ -68,7 +68,7 @@ class MyApp(App):
         #p1.start()
         #p1.join()
         #main()
-        x = threading.Thread(target=self.main())
+        x = threading.Thread(target=self.main(), daemon=True)
         x.start()
 
         return self.login_screen
