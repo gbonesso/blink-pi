@@ -152,7 +152,7 @@ class MyApp(App):
         # print(image)
 
         im = Image.fromarray(im_array)
-        print('PIL Image:', im)
+        #print('PIL Image:', im)
 
         image = cv2.flip(image, 1)
 
@@ -165,16 +165,16 @@ class MyApp(App):
 
         # Show the FPS
         fps_text = 'FPS = {:.1f}'.format(FPS)
-        print(fps_text)
+        #print(fps_text)
 
         # DETECTION_RESULT é setado no callback...
         # print(DETECTION_RESULT)
 
         if DETECTION_RESULT is not None:
-            print(DETECTION_RESULT, len(DETECTION_RESULT.face_landmarks))
+            #print(DETECTION_RESULT, len(DETECTION_RESULT.face_landmarks))
             if len(DETECTION_RESULT.face_landmarks) > 0:
-                print('EAR:', get_ear_values(DETECTION_RESULT))
-                print(self.login_screen.ear_left_label)
+                #print('EAR:', get_ear_values(DETECTION_RESULT))
+                #print(self.login_screen.ear_left_label)
 
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
