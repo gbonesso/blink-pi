@@ -175,7 +175,7 @@ class MyApp(App):
             if len(DETECTION_RESULT.face_landmarks) > 0:
                 #print('EAR:', get_ear_values(DETECTION_RESULT))
                 #print(self.login_screen.ear_left_label)
-                print(DETECTION_RESULT.face_blendshapes[0])
+                #print(DETECTION_RESULT.face_blendshapes[0])
                 face_blendshapes_names = [face_blendshapes_category.category_name for face_blendshapes_category in
                                           DETECTION_RESULT.face_blendshapes[0]]
                 face_blendshapes_scores = [face_blendshapes_category.score for face_blendshapes_category in
