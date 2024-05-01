@@ -20,6 +20,7 @@ from multiprocessing import Process
 import threading
 import cv2
 import mediapipe as mp
+from kivy.clock import Clock
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
@@ -44,6 +45,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 COUNTER, FPS = 0, 0
 START_TIME = time.time()
 DETECTION_RESULT = None
+BUSY = False
 
 #ear_left_label = None
 
@@ -62,16 +64,91 @@ class LoginScreen(GridLayout):
 
 class MyApp(App):
 
+    def __init__(self, **kwargs):
+        super(MyApp, self).__init__(**kwargs)
+        # Inicializa a câmera
+        self.picam2 = Picamera2()
+        self.picam2.start()
+        self.fps_avg_frame_count = 10
+
+        base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
+        options = vision.FaceLandmarkerOptions(
+            base_options=base_options,
+            running_mode=vision.RunningMode.LIVE_STREAM,
+            num_faces=1,
+            min_face_detection_confidence=0.5,
+            min_face_presence_confidence=0.5,
+            min_tracking_confidence=0.5,
+            output_face_blendshapes=True,
+            result_callback=self.save_result)
+        self.detector = vision.FaceLandmarker.create_from_options(options)
+
     def build(self):
         self.login_screen = LoginScreen()
         #p1 = Process(target=self.main())
         #p1.start()
         #p1.join()
         #main()
-        x = threading.Thread(target=self.main(), daemon=True)
-        x.start()
-
+        #x = threading.Thread(target=self.main(), daemon=True)
+        #x.start()
+        Clock.schedule_interval(self.do_detection, 1 / 30)
         return self.login_screen
+
+    def save_result(self, result: vision.FaceLandmarkerResult,
+                    unused_output_image: mp.Image, timestamp_ms: int):
+        global FPS, COUNTER, START_TIME, DETECTION_RESULT
+
+        # Calculate the FPS
+        if COUNTER % self.fps_avg_frame_count == 0:
+            FPS = self.fps_avg_frame_count / (time.time() - START_TIME)
+            START_TIME = time.time()
+
+        DETECTION_RESULT = result
+        COUNTER += 1
+
+    def do_detection(self):
+        global BUSY
+        # Verifica se está fazendo uma deteccao no momento
+        if BUSY:
+            return
+        BUSY = True
+
+        im_array = self.picam2.capture_array("main")
+        # image = Image.fromarray(im_array)
+
+        image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
+        # print(image)
+
+        im = Image.fromarray(im_array)
+        print('PIL Image:', im)
+
+        image = cv2.flip(image, 1)
+
+        # Convert the image from BGR to RGB as required by the TFLite model.
+        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
+
+        # Run face landmarker using the model.
+        self.detector.detect_async(mp_image, time.time_ns() // 1_000_000)
+
+        # Show the FPS
+        fps_text = 'FPS = {:.1f}'.format(FPS)
+        print(fps_text)
+
+        # DETECTION_RESULT é setado no callback...
+        # print(DETECTION_RESULT)
+
+        if DETECTION_RESULT is not None:
+            print('EAR:', get_ear_values(DETECTION_RESULT))
+            print(self.login_screen.ear_left_label)
+            if self.login_screen.ear_left_label is not None:
+                global COUNTER
+                # self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
+                self.login_screen.ear_left_label.text = str(COUNTER)
+                #self.login_screen.canvas.ask_update()
+                #time.sleep(1)
+
+        BUSY = False
 
     def start(self, model: str, num_faces: int,
             min_face_detection_confidence: float,
