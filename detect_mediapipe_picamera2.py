@@ -17,6 +17,7 @@ import argparse
 import sys
 import time
 from multiprocessing import Process
+import threading
 import cv2
 import mediapipe as mp
 
@@ -67,6 +68,9 @@ class MyApp(App):
         #p1.start()
         #p1.join()
         #main()
+        x = threading.Thread(target=self.main())
+        x.start()
+
         return self.login_screen
 
     def start(self, model: str, num_faces: int,
