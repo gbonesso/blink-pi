@@ -50,6 +50,7 @@ class LoginScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
+        #self.login_screen = None
         #global ear_left_label
         self.cols = 2
         self.ear_left_label = Label(text='EAR L:')
@@ -58,13 +59,13 @@ class LoginScreen(GridLayout):
         self.add_widget(self.ear_right_label)
 
 
-
 class MyApp(App):
 
     def build(self):
         self.login_screen = LoginScreen()
         p1 = Process(target=self.main())
         p1.start()
+        p1.join()
         #main()
         return self.login_screen
 
