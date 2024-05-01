@@ -85,7 +85,7 @@ class MyApp(App):
           height: The height of the frame captured from the camera.
       """
 
-        global ear_left_label
+        #global ear_left_label
 
         # Start capturing video input from the camera
         '''cap = cv2.VideoCapture(camera_id)
@@ -176,9 +176,9 @@ class MyApp(App):
 
             if DETECTION_RESULT is not None:
                 print('EAR:', get_ear_values(DETECTION_RESULT))
-                print(ear_left_label)
-                if ear_left_label is not None:
-                    ear_left_label.text = get_ear_values(DETECTION_RESULT)
+                print(self.login_screen.ear_left_label)
+                if self.login_screen.ear_left_label is not None:
+                    self.login_screen.ear_left_label.text = get_ear_values(DETECTION_RESULT)
 
 
             #cv2.imshow('face_landmarker', current_frame)
