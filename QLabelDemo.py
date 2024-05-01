@@ -38,7 +38,7 @@ def window():
     win.setLayout(vbox)
 
     win.setWindowTitle("QLabel Demo")
-    win.show()
+    win.showMaximized()
     sys.exit(app.exec_())
 
 
