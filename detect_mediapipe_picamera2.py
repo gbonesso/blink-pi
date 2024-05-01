@@ -148,6 +148,7 @@ class MyApp(App):
         # print(DETECTION_RESULT)
 
         if DETECTION_RESULT is not None:
+            print(DETECTION_RESULT)
             print('EAR:', get_ear_values(DETECTION_RESULT))
             print(self.login_screen.ear_left_label)
             if self.login_screen.ear_left_label is not None:
