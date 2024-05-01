@@ -99,7 +99,6 @@ class MyApp(App):
 
     def build(self):
         self.login_screen = LoginScreen()
-        self.max()
         #p1 = Process(target=self.main())
         #p1.start()
         #p1.join()
