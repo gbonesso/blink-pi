@@ -181,23 +181,26 @@ class MyApp(App):
                 face_blendshapes_scores = [face_blendshapes_category.score for face_blendshapes_category in
                                            DETECTION_RESULT.face_blendshapes[0]]
                 eye_blink_left = face_blendshapes_scores[face_blendshapes_names.index('eyeBlinkLeft')]
+                eye_blink_right = face_blendshapes_scores[face_blendshapes_names.index('eyeBlinkRight')]
 
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
                     global LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER
                     ear_left = get_ear_values(DETECTION_RESULT)[0]
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
-                    self.logger.info("{:.3f}${:.3f}".format(ear_left, ear_right))
-                    if ear_left < 0.35:
+                    self.logger.info("{:.3f}${:.3f}${:.3f}${:.3f}".format(ear_left, ear_right, eye_blink_left, eye_blink_right, COUNTER))
+                    #if ear_left < 0.35:
+                    if eye_blink_left > 0.5:
                         LEFT_BLINK_COUNTER += 1
                     else:
                         LEFT_OPEN_COUNTER += 1
-                    if ear_right < 0.35:
+                    #if ear_right < 0.35:
+                    if eye_blink_right > 0.5:
                         RIGHT_BLINK_COUNTER += 1
                     else:
                         RIGHT_OPEN_COUNTER += 1
                     self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}\n{:.3f}'.format(ear_left, eye_blink_left)
-                    self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
+                    self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}\n{:.3f}'.format(ear_right, eye_blink_right)
                     self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
                     self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
                     self.login_screen.left_opens.text = str(LEFT_OPEN_COUNTER)
