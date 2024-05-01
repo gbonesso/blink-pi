@@ -63,9 +63,9 @@ class MyApp(App):
 
     def build(self):
         self.login_screen = LoginScreen()
-        p1 = Process(target=self.main())
-        p1.start()
-        p1.join()
+        #p1 = Process(target=self.main())
+        #p1.start()
+        #p1.join()
         #main()
         return self.login_screen
 
