@@ -48,6 +48,7 @@ START_TIME = time.time()
 DETECTION_RESULT = None
 BUSY = False
 LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER = 0, 0
+LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER = 0, 0
 
 #ear_left_label = None
 
@@ -67,6 +68,11 @@ class LoginScreen(GridLayout):
         self.add_widget(self.left_blinks)
         self.right_blinks = Label(text='0')
         self.add_widget(self.right_blinks)
+
+        self.left_opens = Label(text='0')
+        self.add_widget(self.left_opens)
+        self.right_opens = Label(text='0')
+        self.add_widget(self.right_opens)
 
         self.fps = Label(text='FPS')
         self.add_widget(self.fps)
@@ -159,16 +165,23 @@ class MyApp(App):
                 print(self.login_screen.ear_left_label)
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
+                    global LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER
                     ear_left = get_ear_values(DETECTION_RESULT)[0]
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
-                    if ear_left < 0.15:
+                    if ear_left < 0.35:
                         LEFT_BLINK_COUNTER += 1
-                    if ear_right < 0.15:
+                    else:
+                        LEFT_OPEN_COUNTER += 1
+                    if ear_right < 0.35:
                         RIGHT_BLINK_COUNTER += 1
+                    else:
+                        RIGHT_OPEN_COUNTER += 1
                     self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}'.format(ear_left)
                     self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
                     self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
                     self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
+                    self.login_screen.left_opens.text = str(LEFT_OPEN_COUNTER)
+                    self.login_screen.right_opens.text = str(RIGHT_OPEN_COUNTER)
                     self.login_screen.fps.text = fps_text
 
         BUSY = False
