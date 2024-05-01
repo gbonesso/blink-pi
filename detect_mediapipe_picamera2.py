@@ -150,25 +150,21 @@ class MyApp(App):
         if DETECTION_RESULT is not None:
             print(DETECTION_RESULT, len(DETECTION_RESULT.face_landmarks))
             if len(DETECTION_RESULT.face_landmarks) > 0:
-                return
-            print('EAR:', get_ear_values(DETECTION_RESULT))
-            print(self.login_screen.ear_left_label)
-            if self.login_screen.ear_left_label is not None:
-                global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
-                ear_left = get_ear_values(DETECTION_RESULT)[0]
-                ear_right = get_ear_values(DETECTION_RESULT)[1]
-                if ear_left < 0.15:
-                    LEFT_BLINK_COUNTER += 1
-                if ear_right < 0.15:
-                    RIGHT_BLINK_COUNTER += 1
-                self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}'.format(ear_left)
-                self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
-                self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
-                self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
-                self.login_screen.fps.text = fps_text
-                #self.login_screen.ear_left_label.text = str(COUNTER)
-                #self.login_screen.canvas.ask_update()
-                #time.sleep(1)
+                print('EAR:', get_ear_values(DETECTION_RESULT))
+                print(self.login_screen.ear_left_label)
+                if self.login_screen.ear_left_label is not None:
+                    global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
+                    ear_left = get_ear_values(DETECTION_RESULT)[0]
+                    ear_right = get_ear_values(DETECTION_RESULT)[1]
+                    if ear_left < 0.15:
+                        LEFT_BLINK_COUNTER += 1
+                    if ear_right < 0.15:
+                        RIGHT_BLINK_COUNTER += 1
+                    self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}'.format(ear_left)
+                    self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
+                    self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
+                    self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
+                    self.login_screen.fps.text = fps_text
 
         BUSY = False
 
