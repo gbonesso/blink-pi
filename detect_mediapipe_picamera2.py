@@ -21,6 +21,7 @@ import threading
 import cv2
 import mediapipe as mp
 from kivy.clock import Clock
+from kivy.core.window import Window
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
@@ -92,8 +93,13 @@ class MyApp(App):
             result_callback=self.save_result)
         self.detector = vision.FaceLandmarker.create_from_options(options)
 
+    def on_start(self):
+        #Window.custom_titlebar = True
+        Window.maximize()
+
     def build(self):
         self.login_screen = LoginScreen()
+        self.max()
         #p1 = Process(target=self.main())
         #p1.start()
         #p1.join()
