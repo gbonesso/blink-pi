@@ -182,7 +182,7 @@ class MyApp(App):
                 print(self.login_screen.ear_left_label)
                 if self.login_screen.ear_left_label is not None:
                     self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
-                    self.login_screen.ask_update()
+                    self.login_screen.canvas.ask_update()
 
 
             #cv2.imshow('face_landmarker', current_frame)
