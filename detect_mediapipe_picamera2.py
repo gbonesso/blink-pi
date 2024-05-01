@@ -264,8 +264,9 @@ class MyApp(App):
                 print(self.login_screen.ear_left_label)
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER
-                    #self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
-                    self.login_screen.ear_left_label.text = str(COUNTER)
+                    self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
+                    self.login_screen.ear_right_label.text = str(get_ear_values(DETECTION_RESULT)[1])
+                    #self.login_screen.ear_left_label.text = str(COUNTER)
                     self.login_screen.canvas.ask_update()
                     time.sleep(1)
 
