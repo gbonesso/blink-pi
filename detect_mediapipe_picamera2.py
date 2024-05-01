@@ -57,8 +57,9 @@ class LoginScreen(GridLayout):
 class MyApp(App):
 
     def build(self):
+        self.login_screen = LoginScreen()
         main()
-        return LoginScreen()
+        return self.login_screen
 
 def run(model: str, num_faces: int,
         min_face_detection_confidence: float,
