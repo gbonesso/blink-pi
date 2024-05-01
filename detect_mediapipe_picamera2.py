@@ -105,7 +105,7 @@ class MyApp(App):
         fh = logging.FileHandler(datetime.now().strftime('blinklogfile_%Y_%m_%d_%H_%M_%s.log'))
         fh.setLevel(logging.DEBUG)  # ensure all messages are logged to file
         # create a formatter and set the formatter for the handler.
-        frmt = logging.Formatter("'%(asctime)s',%(message)s")
+        frmt = logging.Formatter("%(asctime)s$%(message)s")
         fh.setFormatter(frmt)
         # add the Handler to the logger
         self.logger.addHandler(fh)
@@ -181,7 +181,7 @@ class MyApp(App):
                     global LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER
                     ear_left = get_ear_values(DETECTION_RESULT)[0]
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
-                    self.logger.info("'{:.3f}','{:.3f}'".format(ear_left, ear_right))
+                    self.logger.info("{:.3f}${:.3f}".format(ear_left, ear_right))
                     if ear_left < 0.35:
                         LEFT_BLINK_COUNTER += 1
                     else:
