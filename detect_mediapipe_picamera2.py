@@ -106,7 +106,7 @@ class MyApp(App):
         DETECTION_RESULT = result
         COUNTER += 1
 
-    def do_detection(self):
+    def do_detection(self, dt):
         global BUSY
         # Verifica se está fazendo uma deteccao no momento
         if BUSY:
