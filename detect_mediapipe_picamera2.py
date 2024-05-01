@@ -147,8 +147,10 @@ class MyApp(App):
         # DETECTION_RESULT é setado no callback...
         # print(DETECTION_RESULT)
 
-        if DETECTION_RESULT is not None & len(DETECTION_RESULT.face_landmarks) > 0:
+        if DETECTION_RESULT is not None:
             print(DETECTION_RESULT, len(DETECTION_RESULT.face_landmarks))
+            if len(DETECTION_RESULT.face_landmarks) > 0:
+                return
             print('EAR:', get_ear_values(DETECTION_RESULT))
             print(self.login_screen.ear_left_label)
             if self.login_screen.ear_left_label is not None:
