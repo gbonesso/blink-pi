@@ -272,7 +272,7 @@ class MyApp(App):
             #key = cv2.waitKey(0)
 
             im = Image.fromarray(im_array)
-            print('PIL Image:', im)
+            #print('PIL Image:', im)
 
             image = cv2.flip(image, 1)
 
@@ -285,7 +285,7 @@ class MyApp(App):
 
             # Show the FPS
             fps_text = 'FPS = {:.1f}'.format(FPS)
-            print(fps_text)
+            #print(fps_text)
             '''text_location = (left_margin, row_size)
             current_frame = image
             cv2.putText(current_frame, fps_text, text_location,
@@ -296,8 +296,8 @@ class MyApp(App):
             #print(DETECTION_RESULT)
 
             if DETECTION_RESULT is not None:
-                print('EAR:', get_ear_values(DETECTION_RESULT))
-                print(self.login_screen.ear_left_label)
+                #print('EAR:', get_ear_values(DETECTION_RESULT))
+                #print(self.login_screen.ear_left_label)
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER
                     self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
