@@ -176,6 +176,7 @@ def run(model: str, num_faces: int,
 
         if DETECTION_RESULT is not None:
             print('EAR:', get_ear_values(DETECTION_RESULT))
+            print(ear_left_label)
             if ear_left_label is not None:
                 ear_left_label.text = get_ear_values(DETECTION_RESULT)
 
