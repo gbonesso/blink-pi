@@ -16,7 +16,7 @@
 import argparse
 import sys
 import time
-
+from multiprocessing import Process
 import cv2
 import mediapipe as mp
 
@@ -58,7 +58,8 @@ class MyApp(App):
 
     def build(self):
         self.login_screen = LoginScreen()
-        main()
+
+        #main()
         return self.login_screen
 
 def run(model: str, num_faces: int,
@@ -239,4 +240,6 @@ def main():
 
 if __name__ == '__main__':
     #main()
+    p1 = Process(target=main)
+    p1.start()
     MyApp().run()
