@@ -44,13 +44,16 @@ COUNTER, FPS = 0, 0
 START_TIME = time.time()
 DETECTION_RESULT = None
 
+ear_left_label = None
+
 class LoginScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
+        global ear_left_label
         self.cols = 2
-        self.ear_left_label = Label(text='EAR L:')
-        self.add_widget(self.ear_left_label)
+        ear_left_label = Label(text='EAR L:')
+        self.add_widget(ear_left_label)
         self.ear_right_label = Label(text='EAR R:')
         self.add_widget(self.ear_right_label)
 
@@ -81,6 +84,8 @@ def run(model: str, num_faces: int,
       width: The width of the frame captured from the camera.
       height: The height of the frame captured from the camera.
   """
+
+    global ear_left_label
 
     # Start capturing video input from the camera
     '''cap = cv2.VideoCapture(camera_id)
@@ -171,6 +176,8 @@ def run(model: str, num_faces: int,
 
         if DETECTION_RESULT is not None:
             print('EAR:', get_ear_values(DETECTION_RESULT))
+            if ear_left_label is not None:
+                ear_left_label.text = get_ear_values(DETECTION_RESULT)
 
 
         #cv2.imshow('face_landmarker', current_frame)
