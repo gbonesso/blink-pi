@@ -46,6 +46,7 @@ COUNTER, FPS = 0, 0
 START_TIME = time.time()
 DETECTION_RESULT = None
 BUSY = False
+LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER = 0, 0
 
 #ear_left_label = None
 
@@ -60,6 +61,14 @@ class LoginScreen(GridLayout):
         self.add_widget(self.ear_left_label)
         self.ear_right_label = Label(text='EAR R:')
         self.add_widget(self.ear_right_label)
+
+        self.left_blinks = Label(text='0')
+        self.add_widget(self.left_blinks)
+        self.right_blinks = Label(text='0')
+        self.add_widget(self.right_blinks)
+
+        self.fps = Label(text='FPS')
+        self.add_widget(self.fps)
 
 
 class MyApp(App):
@@ -142,9 +151,18 @@ class MyApp(App):
             print('EAR:', get_ear_values(DETECTION_RESULT))
             print(self.login_screen.ear_left_label)
             if self.login_screen.ear_left_label is not None:
-                global COUNTER
-                self.login_screen.ear_left_label.text = str(get_ear_values(DETECTION_RESULT)[0])
-                self.login_screen.ear_right_label.text = str(get_ear_values(DETECTION_RESULT)[1])
+                global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
+                ear_left = get_ear_values(DETECTION_RESULT)[0]
+                ear_right = get_ear_values(DETECTION_RESULT)[1]
+                if ear_left < 0.15:
+                    LEFT_BLINK_COUNTER += 1
+                if ear_right < 0.15:
+                    RIGHT_BLINK_COUNTER += 1
+                self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}'.format(ear_left)
+                self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
+                self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
+                self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
+                self.login_screen.fps.text = fps_text
                 #self.login_screen.ear_left_label.text = str(COUNTER)
                 #self.login_screen.canvas.ask_update()
                 #time.sleep(1)
