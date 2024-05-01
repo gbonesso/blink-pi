@@ -22,7 +22,13 @@ import mediapipe as mp
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2
+
+import kivy
+kivy.require('2.1.0')  # replace with your current kivy version !
+
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
 
 from PIL import Image
 from picamera2 import Picamera2
@@ -38,6 +44,21 @@ COUNTER, FPS = 0, 0
 START_TIME = time.time()
 DETECTION_RESULT = None
 
+class LoginScreen(GridLayout):
+
+    def __init__(self, **kwargs):
+        super(LoginScreen, self).__init__(**kwargs)
+        self.cols = 2
+        self.ear_left_label = Label(text='EAR L:')
+        self.add_widget(self.ear_left_label)
+        self.ear_right_label = Label(text='EAR R:')
+        self.add_widget(self.ear_right_label)
+
+class MyApp(App):
+
+    def build(self):
+        main()
+        return LoginScreen()
 
 def run(model: str, num_faces: int,
         min_face_detection_confidence: float,
@@ -216,4 +237,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    MyApp().run()

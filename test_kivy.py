@@ -11,12 +11,10 @@ class LoginScreen(GridLayout):
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
         self.cols = 2
-        self.add_widget(Label(text='User Name'))
-        self.username = TextInput(multiline=False)
-        self.add_widget(self.username)
-        self.add_widget(Label(text='password'))
-        self.password = TextInput(password=True, multiline=False)
-        self.add_widget(self.password)
+        self.ear_left_label = Label(text='EAR L:')
+        self.add_widget(self.ear_left_label)
+        self.ear_right_label = Label(text='EAR R:')
+        self.add_widget(self.ear_right_label)
 
 class MyApp(App):
 
