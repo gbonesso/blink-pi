@@ -191,7 +191,7 @@ class MyApp(App):
                         RIGHT_BLINK_COUNTER += 1
                     else:
                         RIGHT_OPEN_COUNTER += 1
-                    self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}'.format(ear_left)
+                    self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}\n{:.3f}'.format(ear_left, DETECTION_RESULT.face_blendshapes.eyeBlinkLeft)
                     self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}'.format(ear_right)
                     self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
                     self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
