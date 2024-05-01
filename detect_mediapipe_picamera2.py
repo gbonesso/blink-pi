@@ -175,6 +175,7 @@ class MyApp(App):
             if len(DETECTION_RESULT.face_landmarks) > 0:
                 #print('EAR:', get_ear_values(DETECTION_RESULT))
                 #print(self.login_screen.ear_left_label)
+                print(DETECTION_RESULT.face_blendshapes.eyeBlinkLeft)
 
                 if self.login_screen.ear_left_label is not None:
                     global COUNTER, LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER
