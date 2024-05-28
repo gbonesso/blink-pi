@@ -39,8 +39,10 @@ import os
 print(os.uname())
 
 if os.uname()[0] == 'Darwin':
-    print('Darwin detected')
+    print('Darwin detected (MacOS)')
 else:
+    print('sysname:', os.uname()[0], 'nodename:', os.uname()[1])
+    # sysname=Linux / nodename=raspberrypi -> Raspberry Pi
     from picamera2 import Picamera2
 
 from media_pipe_utils import get_ear_values
@@ -58,6 +60,8 @@ LEFT_BLINK_COUNTER, RIGHT_BLINK_COUNTER = 0, 0
 LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER = 0, 0
 
 #ear_left_label = None
+
+cam = None # Camera in desktops
 
 class LoginScreen(GridLayout):
 
@@ -89,9 +93,16 @@ class MyApp(App):
 
     def __init__(self, **kwargs):
         super(MyApp, self).__init__(**kwargs)
-        # Inicializa a câmera
-        self.picam2 = Picamera2()
-        self.picam2.start()
+        global cam
+
+        if os.uname()[0] == 'Linux' and os.uname()[1] == 'raspberrypi':
+            # Inicializa a câmera no Raspberry Pi
+            self.picam2 = Picamera2()
+            self.picam2.start()
+        else:
+            cam = cv2.VideoCapture(0)
+            cv2.namedWindow("test")
+
         self.fps_avg_frame_count = 10
 
         base_options = python.BaseOptions(model_asset_path='face_landmarker.task')
@@ -146,17 +157,23 @@ class MyApp(App):
         COUNTER += 1
 
     def do_detection(self, dt):
-        global BUSY
+        global BUSY, cam
         # Verifica se está fazendo uma deteccao no momento
         if BUSY:
             return
         BUSY = True
 
-        im_array = self.picam2.capture_array("main")
+        im_array = None
+        if os.uname()[0] == 'Linux' and os.uname()[1] == 'raspberrypi':
+            im_array = self.picam2.capture_array("main")
+        else:
+            ret, im_array = cam.read()
+            cv2.imshow("test", im_array)
+
         # image = Image.fromarray(im_array)
 
         image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
-        # print(image)
+        #print(image)
 
         im = Image.fromarray(im_array)
         #print('PIL Image:', im)
