@@ -16,6 +16,7 @@
 import argparse
 import time
 from datetime import datetime
+import numpy as np
 
 import cv2
 import logging
@@ -32,6 +33,8 @@ kivy.require('2.1.0')  # replace with your current kivy version !
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image as UixImage
+from kivy.graphics.texture import Texture
 
 from PIL import Image
 
@@ -45,7 +48,7 @@ else:
     # sysname=Linux / nodename=raspberrypi -> Raspberry Pi
     from picamera2 import Picamera2
 
-from media_pipe_utils import get_ear_values
+from media_pipe_utils import get_ear_values, draw_landmarks_on_image
 
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
@@ -61,32 +64,53 @@ LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER = 0, 0
 
 #ear_left_label = None
 
-cam = None # Camera in desktops
+cam = None  # Camera in desktops
+
 
 class LoginScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
-        #self.login_screen = None
-        #global ear_left_label
-        self.cols = 2
+        # self.login_screen = None
+        # global ear_left_label
+        self.cols = 3
+
+        col1 = GridLayout(cols=1)
+        col2 = GridLayout(cols=1)
+        col3 = GridLayout(cols=1)
+
         self.ear_left_label = Label(text='EAR L:')
-        self.add_widget(self.ear_left_label)
+        col1.add_widget(self.ear_left_label)
         self.ear_right_label = Label(text='EAR R:')
-        self.add_widget(self.ear_right_label)
+        col3.add_widget(self.ear_right_label)
 
         self.left_blinks = Label(text='0')
-        self.add_widget(self.left_blinks)
+        col1.add_widget(self.left_blinks)
         self.right_blinks = Label(text='0')
-        self.add_widget(self.right_blinks)
+        col3.add_widget(self.right_blinks)
 
         self.left_opens = Label(text='0')
-        self.add_widget(self.left_opens)
+        col1.add_widget(self.left_opens)
         self.right_opens = Label(text='0')
-        self.add_widget(self.right_opens)
+        col3.add_widget(self.right_opens)
 
         self.fps = Label(text='FPS')
-        self.add_widget(self.fps)
+        col1.add_widget(self.fps)
+
+        texture = Texture.create(size=(100, 100), colorfmt="rgb")
+        arr = np.ndarray(shape=[100, 100, 3], dtype=np.uint8)
+        # fill your numpy array here
+        arr.fill(255)  # or img[:] = 255
+        data = arr.tostring()
+        texture.blit_buffer(data, bufferfmt="ubyte", colorfmt="rgb")
+        self.image = UixImage(texture=texture)
+
+        #self.image = UixImage(source='Teste.jpg')
+        col2.add_widget(self.image)
+
+        self.add_widget(col1)
+        self.add_widget(col2)
+        self.add_widget(col3)
 
 
 class MyApp(App):
@@ -230,6 +254,25 @@ class MyApp(App):
                     self.login_screen.left_opens.text = str(LEFT_OPEN_COUNTER)
                     self.login_screen.right_opens.text = str(RIGHT_OPEN_COUNTER)
                     self.login_screen.fps.text = fps_text
+
+
+            arr = np.ndarray(shape=[400, 400, 3], dtype=np.uint8)
+            arr.fill(0)  # or img[:] = 255
+            mp_blank_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=arr)
+
+            annotated_image = draw_landmarks_on_image(
+                #self.login_screen.image.export_as_image(),
+                #Image.fromarray(self.login_screen.image),
+                mp_blank_image.numpy_view(),
+                DETECTION_RESULT
+            )
+
+            vert_flip_image = np.array(list(reversed(annotated_image)))
+            #print(annotated_image)
+            texture = Texture.create(size=(400, 400), colorfmt="rgb")
+            data = vert_flip_image.tostring()
+            texture.blit_buffer(data, bufferfmt="ubyte", colorfmt="rgb")
+            self.login_screen.image.texture = texture
 
         BUSY = False
 
