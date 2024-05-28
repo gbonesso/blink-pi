@@ -34,7 +34,14 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 
 from PIL import Image
-from picamera2 import Picamera2
+
+import os
+print(os.uname())
+
+if os.uname()[0] == 'Darwin':
+    print('Darwin detected')
+else:
+    from picamera2 import Picamera2
 
 from media_pipe_utils import get_ear_values
 
