@@ -28,6 +28,7 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
 import kivy
+
 kivy.require('2.1.0')  # replace with your current kivy version !
 
 from kivy.app import App
@@ -39,6 +40,7 @@ from kivy.graphics.texture import Texture
 from PIL import Image
 
 import os
+
 print(os.uname())
 
 if os.uname()[0] == 'Darwin':
@@ -96,6 +98,8 @@ class LoginScreen(GridLayout):
 
         self.fps = Label(text='FPS')
         col1.add_widget(self.fps)
+        self.filler = Label(text='Singleton Sistemas')
+        col3.add_widget(self.filler)
 
         texture = Texture.create(size=(100, 100), colorfmt="rgb")
         arr = np.ndarray(shape=[100, 100, 3], dtype=np.uint8)
@@ -152,7 +156,6 @@ class MyApp(App):
         # add the Handler to the logger
         self.logger.addHandler(fh)
 
-
     def on_start(self):
         #Window.custom_titlebar = True
         Window.maximize()
@@ -202,7 +205,8 @@ class MyApp(App):
         im = Image.fromarray(im_array)
         #print('PIL Image:', im)
 
-        image = cv2.flip(image, 1)
+        # 0 -> flip horizontally, 1 -> flip vertically
+        # image = cv2.flip(image, 1)
 
         # Convert the image from BGR to RGB as required by the TFLite model.
         rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -236,7 +240,9 @@ class MyApp(App):
                     global LEFT_OPEN_COUNTER, RIGHT_OPEN_COUNTER
                     ear_left = get_ear_values(DETECTION_RESULT)[0]
                     ear_right = get_ear_values(DETECTION_RESULT)[1]
-                    self.logger.info("{:.3f}${:.3f}${:.3f}${:.3f}".format(ear_left, ear_right, eye_blink_left, eye_blink_right, COUNTER))
+                    self.logger.info(
+                        "{:.3f}${:.3f}${:.3f}${:.3f}".format(ear_left, ear_right, eye_blink_left, eye_blink_right,
+                                                             COUNTER))
                     #if ear_left < 0.35:
                     if eye_blink_left > 0.4:
                         LEFT_BLINK_COUNTER += 1
@@ -248,13 +254,13 @@ class MyApp(App):
                     else:
                         RIGHT_OPEN_COUNTER += 1
                     self.login_screen.ear_left_label.text = 'EAR ESQ = {:.3f}\n{:.3f}'.format(ear_left, eye_blink_left)
-                    self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}\n{:.3f}'.format(ear_right, eye_blink_right)
+                    self.login_screen.ear_right_label.text = 'EAR DIR = {:.3f}\n{:.3f}'.format(ear_right,
+                                                                                               eye_blink_right)
                     self.login_screen.left_blinks.text = str(LEFT_BLINK_COUNTER)
                     self.login_screen.right_blinks.text = str(RIGHT_BLINK_COUNTER)
                     self.login_screen.left_opens.text = str(LEFT_OPEN_COUNTER)
                     self.login_screen.right_opens.text = str(RIGHT_OPEN_COUNTER)
                     self.login_screen.fps.text = fps_text
-
 
             arr = np.ndarray(shape=[400, 400, 3], dtype=np.uint8)
             arr.fill(0)  # or img[:] = 255
@@ -277,26 +283,26 @@ class MyApp(App):
         BUSY = False
 
     def start(self, model: str, num_faces: int,
-            min_face_detection_confidence: float,
-            min_face_presence_confidence: float, min_tracking_confidence: float,
-            camera_id: int, width: int, height: int) -> None:
+              min_face_detection_confidence: float,
+              min_face_presence_confidence: float, min_tracking_confidence: float,
+              camera_id: int, width: int, height: int) -> None:
         """Continuously run inference on images acquired from the camera.
 
-      Args:
-          model: Name of the face landmarker model bundle.
-          num_faces: Max number of faces that can be detected by the landmarker.
-          min_face_detection_confidence: The minimum confidence score for face
-            detection to be considered successful.
-          min_face_presence_confidence: The minimum confidence score of face
-            presence score in the face landmark detection.
-          min_tracking_confidence: The minimum confidence score for the face
-            tracking to be considered successful.
-          camera_id: The camera id to be passed to OpenCV.
-          width: The width of the frame captured from the camera.
-          height: The height of the frame captured from the camera.
-      """
+        Args:
+              model: Name of the face landmarker model bundle.
+              num_faces: Max number of faces that can be detected by the landmarker.
+              min_face_detection_confidence: The minimum confidence score for face
+                detection to be considered successful.
+              min_face_presence_confidence: The minimum confidence score of face
+                presence score in the face landmark detection.
+              min_tracking_confidence: The minimum confidence score for the face
+                tracking to be considered successful.
+              camera_id: The camera id to be passed to OpenCV.
+              width: The width of the frame captured from the camera.
+              height: The height of the frame captured from the camera.
+        """
 
-        #global ear_left_label
+        # global ear_left_label
 
         # Start capturing video input from the camera
         '''cap = cv2.VideoCapture(camera_id)
@@ -353,7 +359,7 @@ class MyApp(App):
                 )'''
 
             im_array = picam2.capture_array("main")
-            #image = Image.fromarray(im_array)
+            # image = Image.fromarray(im_array)
 
             image = cv2.cvtColor(im_array, cv2.COLOR_RGBA2BGR)
             #print(image)
@@ -396,7 +402,6 @@ class MyApp(App):
                     self.login_screen.canvas.ask_update()
                     time.sleep(1)
 
-
             #cv2.imshow('face_landmarker', current_frame)
 
             # Stop the program if the ESC key is pressed.
@@ -406,7 +411,6 @@ class MyApp(App):
         detector.close()
         #cap.release()
         #cv2.destroyAllWindows()
-
 
     def main(self):
         parser = argparse.ArgumentParser(
@@ -440,7 +444,8 @@ class MyApp(App):
             required=False,
             default=0.5)
         # Finding the camera ID can be very reliant on platform-dependent methods.
-        # One common approach is to use the fact that camera IDs are usually indexed sequentially by the OS, starting from 0.
+        # One common approach is to use the fact that camera IDs are usually indexed sequentially by the OS,
+        # starting from 0.
         # Here, we use OpenCV and create a VideoCapture object for each potential ID with 'cap = cv2.VideoCapture(i)'.
         # If 'cap' is None or not 'cap.isOpened()', it indicates the camera ID is not available.
         parser.add_argument(
@@ -458,8 +463,8 @@ class MyApp(App):
         args = parser.parse_args()
 
         self.start(args.model, int(args.numFaces), args.minFaceDetectionConfidence,
-            args.minFacePresenceConfidence, args.minTrackingConfidence,
-            int(args.cameraId), args.frameWidth, args.frameHeight)
+                   args.minFacePresenceConfidence, args.minTrackingConfidence,
+                   int(args.cameraId), args.frameWidth, args.frameHeight)
 
 
 if __name__ == '__main__':
@@ -467,4 +472,3 @@ if __name__ == '__main__':
     #p1 = Process(target=main)
     #p1.start()
     MyApp().run()
-
